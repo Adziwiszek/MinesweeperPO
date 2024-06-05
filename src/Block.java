@@ -19,7 +19,7 @@ public class Block extends JButton {
         this.parent = parent_;
         this.x = x;
         this.y = y;
-        this.button = new JButton(x+";"+y);
+        this.button = new JButton();
         this.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 parent.onClick(state, uncovered, x, y);

@@ -29,6 +29,7 @@ public class GameLogic {
     public void onClick(int state, boolean uncovered, int x, int y){
         System.out.println("CLICKED BLOCK: "+x+","+y+
             " | uncovered = "+uncovered + " | state = "+state);
+        this.mineField[x][y].setName("Click!");;
     }
 
     public JPanel getPanel(){
