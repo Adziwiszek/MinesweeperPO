@@ -12,34 +12,29 @@ public class Block extends JButton {
     private int state = 0;
     private boolean uncovered = false; 
     private boolean flagged = false;
-    // private Pair<int, int> positionOnMap;
-    private int x;
-    private int y;
+    private Position position;
     private JButton button;
     private GameLogic parent;    
 
-    public Block(GameLogic parent_, int x_, int y_){
+    public Block(GameLogic parent_, Position pos_){
         super();
         this.parent = parent_;
-        this.x = x_;
-        this.y = y_;
+        this.position = pos_;
         this.setBackground(UNCLICKED_COLOR);
         this.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                parent.onClick(state, uncovered, x, y);
+                parent.onClick(state, uncovered, position);
             }
         });  
     }
 
-    public JButton getButton(){
-        return this.button;
-    }
+    public JButton getButton(){ return this.button; }
 
-    public void setUncovered(boolean unc){
-        this.uncovered = unc;
-    }
+    public void setUncovered(boolean unc){ this.uncovered = unc; }
 
-    public void setState(int state_){
-        this.state = state_;
-    }
+    public void setState(int state_){ this.state = state_; }
+
+    public int getState(){ return this.state; }
+
+    public void incrementState(int inc){ this.state += inc; }
 }
