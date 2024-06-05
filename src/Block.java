@@ -32,6 +32,8 @@ public class Block extends JButton {
 
     public void setUncovered(boolean unc){ this.uncovered = unc; }
 
+    public boolean getUncovered() { return this.uncovered; }
+
     public void setState(int state_){ this.state = state_; }
 
     public int getState(){ return this.state; }

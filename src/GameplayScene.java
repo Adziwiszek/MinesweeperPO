@@ -1,8 +1,9 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.imageio.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class GameplayScene  extends MyScene{
     private GameLogic gameManager;
@@ -18,6 +19,7 @@ public class GameplayScene  extends MyScene{
             SM
         ));
         upperRow.add(new JLabel("Graj:))"));
+        
         this.panel.add(upperRow, BorderLayout.NORTH);
 
         gameManager = new GameLogic();
