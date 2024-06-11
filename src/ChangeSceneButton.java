@@ -9,7 +9,8 @@ public class ChangeSceneButton extends JButton{
     private String newSceneName;
     private SceneManager SM;
 
-    public ChangeSceneButton(String buttonText, String newSceneName_, SceneManager SM_){
+    public ChangeSceneButton(String buttonText, String newSceneName_, 
+    SceneManager SM_){
         // button = new JButton(buttonText);
         super(buttonText);
         this.newSceneName = newSceneName_;
