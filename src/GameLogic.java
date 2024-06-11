@@ -8,7 +8,9 @@ import javax.swing.JOptionPane;
 
 public class GameLogic {
     // TODO: move  to color class in future
-    public Color CLICKED_COLOR = new Color(209, 186, 186);
+    public final Color CLICKED_COLOR = new Color(209, 186, 186);
+    public final Color UNCLICKED_COLOR = new Color(115, 88, 88);
+
 
     private Block[][] mineField;
     private JPanel panel;
@@ -65,7 +67,7 @@ public class GameLogic {
             while (!toUncover.isEmpty()) { 
                 Position current = toUncover.poll();
                 Block curBlock = this.mineField[current.y][current.x];
-                this.onClickAction(curBlock.getState(), true, current);
+                this.onClickAction(curBlock.getState(), current);
 
                 if(curBlock.getState() == 0){
                     for(int x = -1; x <= 1; x++){
@@ -87,7 +89,7 @@ public class GameLogic {
         }
     }
 
-    private void onClickAction(int state, boolean uncovered, Position pos){
+    private void onClickAction(int state, Position pos){
         // System.out.println("CLICKED BLOCK: "+pos.x+","+pos.y+
         //     " | uncovered = "+uncovered + " | state = "+state);
         Block curBlock = this.mineField[pos.y][pos.x];

@@ -5,9 +5,6 @@ import javax.imageio.*;
 import java.io.*;
 
 public class Block extends JButton {
-    // TODO: maybe move to my own color class in future
-    public Color UNCLICKED_COLOR = new Color(115, 88, 88);
-
     private int state = 0;
     private boolean uncovered = false; 
     private boolean flagged = false;
@@ -19,25 +16,28 @@ public class Block extends JButton {
         super();
         this.parent = parent_;
         this.position = pos_;
-        this.setBackground(UNCLICKED_COLOR);
+        this.setBackground(this.parent.UNCLICKED_COLOR);
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     parent.flagField(position, flagged);
                 }
+                if (SwingUtilities.isLeftMouseButton(e)){
+                    parent.onClick(state, uncovered, position);
+                }
             }
         });
-        this.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                parent.onClick(state, uncovered, position);
-            }
-        });  
+        // this.addActionListener(new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         parent.onClick(state, uncovered, position);
+        //     }
+        // });  
     }
 
     public void reset(){
         this.setText("");
-        this.setBackground(UNCLICKED_COLOR);
+        this.setBackground(this.parent.UNCLICKED_COLOR);
         this.uncovered = false;
         this.flagged = false;
         this.state = 0;
@@ -57,14 +57,13 @@ public class Block extends JButton {
                 this.setText((this.state > 0 ? this.state : "")+"");
             }
         }
-        
         this.setBackground(parent.CLICKED_COLOR);
         this.setUncovered(true);
     }
 
     public void cover(){
         this.setText("");
-        this.setBackground(UNCLICKED_COLOR);
+        this.setBackground(this.parent.UNCLICKED_COLOR);
         this.setUncovered(false);
     }
 
