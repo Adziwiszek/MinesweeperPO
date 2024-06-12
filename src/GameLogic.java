@@ -100,12 +100,17 @@ public class GameLogic {
                 "You Lost!!!");
                 this.gameStatus = -1;
             }
-            curBlock.uncover();
-            if(!curBlock.getUncovered()){ this.coveredFields--; }
+            
+            if(!curBlock.getUncovered()){                 
+                this.coveredFields--; 
+                curBlock.uncover();
+            }
 
             if(this.coveredFields <= 0){
                 JOptionPane.showMessageDialog(null, 
                 "You Won!!!");
+                this.unflagAllFields();
+                this.uncoverAllBombs();
                 this.gameStatus = 1;
             }
         }
@@ -152,7 +157,6 @@ public class GameLogic {
         for(int i = -1; i <= 1; i++){
             for(int j = -1; j <= 1; j++){
                 safePositions[n] = posIndex + i*size + j;
-                System.out.println(safePositions[n]);
                 n++;
             }
         }
@@ -179,11 +183,22 @@ public class GameLogic {
         }
     }
 
-    public void flagField(Position pos, boolean f){
-        this.mineField[pos.y][pos.x].setFlagged(!f);
-        if(f){
-            this.mineField[pos.y][pos.x].cover();
+    public void unflagAllFields(){
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                this.mineField[j][i].setFlagged(false);
+                // this.mineField[j][i].uncover();
+            }
         }
-        else this.mineField[pos.y][pos.x].uncover();
+    }
+
+    public void flagField(Position pos, boolean f){
+        if(!this.mineField[pos.y][pos.x].getUncovered() || f){
+            this.mineField[pos.y][pos.x].setFlagged(!f);
+            if(f){
+                this.mineField[pos.y][pos.x].cover();
+            }
+            else this.mineField[pos.y][pos.x].uncover();
+        }  
     }
 }

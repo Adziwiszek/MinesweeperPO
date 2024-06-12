@@ -28,11 +28,6 @@ public class Block extends JButton {
                 }
             }
         });
-        // this.addActionListener(new ActionListener() {
-        //     public void actionPerformed(ActionEvent e) {
-        //         parent.onClick(state, uncovered, position);
-        //     }
-        // });  
     }
 
     public void reset(){
