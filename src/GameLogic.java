@@ -1,49 +1,67 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
-import javax.swing.JPanel;
+
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class GameLogic {
     // TODO: move  to color class in future
-    public final Color CLICKED_COLOR = new Color(209, 186, 186);
+    public final Color CLICKED_COLOR = new Color(209, 186, 255);
     public final Color UNCLICKED_COLOR = new Color(115, 88, 88);
 
-
+    private GameplayScene parentScene;
     private Block[][] mineField;
     private JPanel panel;
-    private boolean gameStarted = false;
+    private boolean gameStarted;
     private int gameStatus;
-    private int size = 8;
-    private int bombs = 8;
+    private int size;
+    private int bombs;
     private int coveredFields;
 
     private ArrayList<Position> mapPositions;
 
-    public GameLogic(){
-        mineField = new Block[size][size];
-        panel = new JPanel(new GridLayout(size, size));
-        mapPositions = new ArrayList<>();
-        this.coveredFields = size*size - bombs;
-        initGame();
-    }    
+    public GameLogic(GameplayScene parent_){
+        this.parentScene = parent_;
+        // mineField = new Block[size][size];
+        // mapPositions = new ArrayList<>();
+        // this.coveredFields = size*size - bombs;
+        // initGame();
+    } 
+    
+    public void setParent(GameplayScene parent_){
+        this.parentScene = parent_;
+    }
 
-    private void initGame(){
+    public void initGame(int size_, int bombs_){
+        this.size = size_;
+        this.bombs = bombs_;
+        this.mineField = new Block[this.size][this.size];
+        this.panel = new JPanel(new GridLayout(this.size, this.size));
+        this.mapPositions = new ArrayList<>();
+
+        System.out.println("initializing game");
+
         Block block;
         for(int i = 0; i < size; i++){
             for(int j = 0; j < size; j++){
                 block = new Block(this, new Position(i, j));
                 mapPositions.add(new Position(i, j));
-                // coordinates - x, y
                 mineField[j][i] = block;
                 panel.add(block);
             }
         }
+
+        // parentScene.setGamePanel();
+
+        // this.resetGame();
     }
 
     public void resetGame(){
+        System.out.println("reseting");
         this.gameStarted = false;
         this.coveredFields = size*size - bombs;
         this.gameStatus = 0;
@@ -52,6 +70,7 @@ public class GameLogic {
                 mineField[j][i].reset();
             }
         }
+        // parentScene.setGamePanel();
     }
 
     public void onClick(int state, boolean uncovered, Position pos){
@@ -62,6 +81,7 @@ public class GameLogic {
         }
 
         if(!this.mineField[pos.y][pos.x].getUncovered()){
+            // System.out.println("dupa");
             Queue<Position> toUncover = new LinkedList<>();
             toUncover.add(pos);
             while (!toUncover.isEmpty()) { 
@@ -93,7 +113,8 @@ public class GameLogic {
         // System.out.println("CLICKED BLOCK: "+pos.x+","+pos.y+
         //     " | uncovered = "+uncovered + " | state = "+state);
         Block curBlock = this.mineField[pos.y][pos.x];
-        if(this.gameStatus == 0 || !curBlock.getFlagged()){         
+        if(this.gameStatus == 0 && !curBlock.getFlagged()){         
+
             if(state < 0){
                 this.uncoverAllBombs();
                 JOptionPane.showMessageDialog(null, 

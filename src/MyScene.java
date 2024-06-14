@@ -7,9 +7,11 @@ public class MyScene {
     protected JPanel panel;
     private ArrayList<JComponent> objects;
     private String name;
+    protected SceneManager SM;
 
-    public MyScene(String name, Color backgroundColor)
+    public MyScene(String name, Color backgroundColor, SceneManager SM_)
     {
+        this.SM = SM_;
         this.name = name;
         this.panel = new JPanel();
         this.panel.setBackground(backgroundColor);
