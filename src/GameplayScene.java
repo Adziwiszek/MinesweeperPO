@@ -6,7 +6,7 @@ import java.io.*;
 
 public class GameplayScene  extends MyScene{
     //private GameLogic gameManager;
-    JPanel gamePanel = new JPanel();
+    JPanel gamePanel = new JPanel(new GridLayout());
 
     public GameplayScene(SceneManager SM_){
         super("Gameplay", Color.green, SM_);
