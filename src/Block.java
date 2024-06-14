@@ -1,21 +1,29 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.imageio.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 
 public class Block extends JButton {
     public final Color UNCOLOR = new Color(115, 88, 88);
+    private final int[] PIC_SIZES = {20, 15, 7};
+    private final int[] TEXT_SIZES = {18, 13, 13};
 
     private int state = 0;
     private boolean uncovered = false; 
     private boolean flagged = false;
     private Position position;
     private JButton button;
+    private int pictureSize;
+    private int textSize;
     private GameLogic parent;    
 
-    public Block(GameLogic parent_, Position pos_){
+    public Block(GameLogic parent_, Position pos_, int diff){
         super();
+        this.pictureSize = PIC_SIZES[diff];
+        this.textSize = TEXT_SIZES[diff];
         this.parent = parent_;
         this.position = pos_;
         // this.setBackground(this.parent.UNCLICKED_COLOR);
@@ -24,6 +32,7 @@ public class Block extends JButton {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                // System.out.println("clicked: " + position.x + ",  " + position.y);
                 if (SwingUtilities.isRightMouseButton(e)) {
                     parent.flagField(position, flagged);
                 }
@@ -51,14 +60,15 @@ public class Block extends JButton {
 
         if(this.flagged){
             this.setText("☂");
-            this.setFont(new Font("Ariel", Font.PLAIN, 20));
+            this.setFont(new Font("Ariel", Font.PLAIN, pictureSize));
         }
         else{
             if(this.state < 0){
-                this.setFont(new Font("Ariel", Font.PLAIN, 20));
+                this.setFont(new Font("Ariel", Font.PLAIN, pictureSize));
                 this.setText("㋛");
             }
             else{
+                this.setFont(new Font("Ariel", Font.PLAIN, textSize));
                 this.setText((this.state > 0 ? this.state : "")+"");
             }
         }

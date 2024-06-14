@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameLogic {
-    // TODO: move  to color class in future
     public final Color CLICKED_COLOR = new Color(209, 186, 255);
     public final Color UNCLICKED_COLOR = new Color(115, 88, 88);
 
@@ -18,7 +17,8 @@ public class GameLogic {
     private JPanel panel;
     private boolean gameStarted;
     private int gameStatus;
-    private int size;
+    private int sizeX;
+    private int sizeY;
     private int bombs;
     private int coveredFields;
 
@@ -36,19 +36,22 @@ public class GameLogic {
         this.parentScene = parent_;
     }
 
-    public void initGame(int size_, int bombs_){
-        this.size = size_;
+    public void initGame(int sizeX_, int sizeY_, int bombs_, int diff){
+        this.sizeX = sizeX_;
+        this.sizeY = sizeY_;
         this.bombs = bombs_;
-        this.mineField = new Block[this.size][this.size];
-        this.panel = new JPanel(new GridLayout(this.size, this.size));
+        this.mineField = new Block[this.sizeY][this.sizeX];
+        this.panel = new JPanel(new GridLayout(this.sizeY, this.sizeX));
         this.mapPositions = new ArrayList<>();
 
-        System.out.println("initializing game");
+        // System.out.println("initializing game");
+        // System.out.println("Size = " + sizeX + ", " + sizeY);
 
         Block block;
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
-                block = new Block(this, new Position(i, j));
+        for(int j = 0; j < sizeY; j++){
+            for(int i = 0; i < sizeX; i++){
+                // System.out.println(j + ", " + i);
+                block = new Block(this, new Position(i, j), diff);
                 mapPositions.add(new Position(i, j));
                 mineField[j][i] = block;
                 panel.add(block);
@@ -56,17 +59,16 @@ public class GameLogic {
         }
 
         // parentScene.setGamePanel();
-
         // this.resetGame();
     }
 
     public void resetGame(){
         System.out.println("reseting");
         this.gameStarted = false;
-        this.coveredFields = size*size - bombs;
+        this.coveredFields = sizeX*sizeY - bombs;
         this.gameStatus = 0;
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
+        for(int i = 0; i < sizeX; i++){
+            for(int j = 0; j < sizeY; j++){
                 mineField[j][i].reset();
             }
         }
@@ -77,14 +79,14 @@ public class GameLogic {
         if(!gameStarted){
             System.out.println("STARTING");
             gameStarted = true;
-            this.populateField(8, pos);
+            this.populateField(this.bombs, pos);
         }
 
         if(!this.mineField[pos.y][pos.x].getUncovered()){
             // System.out.println("dupa");
             Queue<Position> toUncover = new LinkedList<>();
             toUncover.add(pos);
-            while (!toUncover.isEmpty()) { 
+            while (!toUncover.isEmpty() && this.gameStatus == 0) { 
                 Position current = toUncover.poll();
                 Block curBlock = this.mineField[current.y][current.x];
                 this.onClickAction(curBlock.getState(), current);
@@ -94,8 +96,8 @@ public class GameLogic {
                         for(int y = -1; y <= 1; y++){
                             int newY = current.y + y;
                             int newX = current.x + x;
-                            if(newX < 0 || newX >= this.size || 
-                               newY < 0 || newY >= this.size ||
+                            if(newX < 0 || newX >= this.sizeX || 
+                               newY < 0 || newY >= this.sizeY ||
                                (x == 0 && y == 0)){
                                 continue;
                             }
@@ -114,7 +116,6 @@ public class GameLogic {
         //     " | uncovered = "+uncovered + " | state = "+state);
         Block curBlock = this.mineField[pos.y][pos.x];
         if(this.gameStatus == 0 && !curBlock.getFlagged()){         
-
             if(state < 0){
                 this.uncoverAllBombs();
                 JOptionPane.showMessageDialog(null, 
@@ -140,7 +141,9 @@ public class GameLogic {
     private void populateField(int bombs, Position startingPos){
         ArrayList<Position> availablePos = new ArrayList<>(mapPositions);
         availablePos = this.secureStartingPos(availablePos, startingPos);
-        
+        // for (Position position : availablePos) {
+        //     System.out.println(position.x + ", " + position.y);
+        // }
         Random generator = new Random();
 
         for(int k = 0; k < bombs; k ++){
@@ -155,8 +158,8 @@ public class GameLogic {
                     else {
                         int newY = pos.y + y;
                         int newX = pos.x + x;
-                        if(newX < 0 || newX >= this.size || 
-                           newY < 0 || newY >= this.size){
+                        if(newX < 0 || newX >= this.sizeX || 
+                           newY < 0 || newY >= this.sizeY){
                             continue;
                         }
                         mineField[newY][newX].incrementState(1);    
@@ -166,37 +169,31 @@ public class GameLogic {
         }
     } 
 
-    public JPanel getPanel(){
-        return this.panel;
-    }
-
     private ArrayList<Position> secureStartingPos(ArrayList<Position> arr,
-                                                Position pos){
-        int posIndex = pos.y + size*pos.x;
-        int[] safePositions = new int[9];
-        int n = 0;
+                                                Position pos){    
+        boolean safePos[][] = new boolean[sizeY][sizeX];
         for(int i = -1; i <= 1; i++){
             for(int j = -1; j <= 1; j++){
-                safePositions[n] = posIndex + i*size + j;
-                n++;
+                if(checkIfValidPosition(pos, i, j)){
+                    safePos[pos.y + j][pos.x + i] = true;
+                }
             }
         }
+        System.out.println("FIRST POSITION: " +pos.x + ", " + pos.y);
 
         ArrayList<Position> result = new ArrayList<>();
-        for(int i = 0; i < arr.size(); i++){
-            boolean goToNext = false;
-            for(int j = 0; j < 9; j++){
-                if(safePositions[j] == i) { goToNext = true; break; }
+        for (Position position : arr) {
+            if(!safePos[position.y][position.x]){
+                result.add(position);
             }
-            if(goToNext) { continue; }
-            result.add(arr.get(i));
+            else System.out.println(position.x +", "+position.y);
         }
         return result;
     }
 
     private void uncoverAllBombs(){
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
+        for(int i = 0; i < sizeX; i++){
+            for(int j = 0; j < sizeY; j++){
                 if(mineField[j][i].getState() < 0){
                     mineField[j][i].uncover();
                 }
@@ -205,8 +202,8 @@ public class GameLogic {
     }
 
     public void unflagAllFields(){
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
+        for(int i = 0; i < sizeX; i++){
+            for(int j = 0; j < sizeY; j++){
                 this.mineField[j][i].setFlagged(false);
                 // this.mineField[j][i].uncover();
             }
@@ -221,5 +218,19 @@ public class GameLogic {
             }
             else this.mineField[pos.y][pos.x].uncover();
         }  
+    }
+
+    private boolean checkIfValidPosition(Position pos, int offX, int offY){
+        int newY = pos.y + offY;
+        int newX = pos.x + offX;
+        if(newX < 0 || newX >= this.sizeX ||
+           newY < 0 || newY >= this.sizeY){
+            return false;
+        }
+        return true;
+    }
+
+    public JPanel getPanel(){
+        return this.panel;
     }
 }

@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class SceneManager { 
-    private JFrame frame = new JFrame("Swing Refresh Bug?");
+    private JFrame frame = new JFrame("Minesweeper!");
     private ArrayList<MyScene> scenes;
 
     private Container contentPane = frame.getContentPane();
@@ -22,6 +22,12 @@ public class SceneManager {
     public final int MAXDIFFICULTY = 3;
     public final int DEFAULT_SIZE = 8;
     public final int DEFAULT_BOMBS = 8;
+    public final int EASY_DIFFICULTY[] = {8, 8, 10};
+    public final int MEDIUM_DIFFICULTY[] = {16, 16, 40};
+    public final int HARD_DIFFICULTY[] = {30, 16, 99};
+    public final int DIFFICULTIES[][] = 
+        {EASY_DIFFICULTY, MEDIUM_DIFFICULTY, HARD_DIFFICULTY};
+    public final String DIFFICULTY_NAMES[] = {"Easy", "Medium", "Hard"};
     public final int DEFAULT_DIFFICULTY = 0;
     public final Integer[] SIZE_SETTINGS = {6, 7, 8, 9 ,10, 11, 12};
     public final Integer[] BOMB_SETTINGS = {6, 7, 8, 9, 10, 11, 12,
@@ -35,9 +41,6 @@ public class SceneManager {
 
         gameplayScene = new GameplayScene(this);
         gameManager = new GameLogic(gameplayScene);
-        //this.startGame(DEFAULT_SIZE, DEFAULT_BOMBS);
-        // gameManager.addParent(gameplayScene);
-        
 
         scenes = new ArrayList();
         scenes.add(new MainMenuScene(this));
@@ -50,7 +53,6 @@ public class SceneManager {
         contentPane.setLayout(new BorderLayout());
         contentPane.add(cardPanel,BorderLayout.CENTER);
 
-        //frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -63,8 +65,8 @@ public class SceneManager {
         SceneManager man = new SceneManager();
     }
 
-    public void startGame(int size, int bombs){
-        this.gameManager.initGame(size, bombs);
+    public void startGame(int sizeX, int sizeY, int bombs, int diff){
+        this.gameManager.initGame(sizeX, sizeY, bombs, diff);
         this.gameManager.resetGame();
         this.gameplayScene.setGamePanel();
     }

@@ -14,8 +14,8 @@ public class DifficultyScene extends MyScene {
     public DifficultyScene(SceneManager SM_){
         super("Difficulty", Color.green, SM_);
 
-        SM.gameManager.initGame(8, 8);
-        SM.gameManager.resetGame();
+        // SM.gameManager.initGame(8, 8, 0);
+        // SM.gameManager.resetGame();
 
         this.panel.setLayout(new GridBagLayout());   
 
@@ -25,38 +25,35 @@ public class DifficultyScene extends MyScene {
             "Menu",
             SM
         );
-        // backToMenuButton.addActionListener(new ActionListener() {
-        //     public void actionPerformed(ActionEvent e) {
-        //         SM.gameManager.resetGame();
-        //     }
-        // });
         JPanel settingsPanel = new JPanel(new GridBagLayout());
-        sizeSetting = new JSpinner(new SpinnerListModel(SM.SIZE_SETTINGS));
-        sizeSetting.setValue(SM.DEFAULT_SIZE);
-        diffSetting = new JSpinner(new SpinnerListModel(SM.BOMB_SETTINGS));
-        diffSetting.setValue(SM.DEFAULT_BOMBS);
-        settingsPanel.add(sizeSetting);
-        settingsPanel.add(diffSetting);
+
+        ChangeSceneButton diffButton;
+        for(int i = 0; i < 3; i++){
+            diffButton = new ChangeSceneButton(
+                SM.DIFFICULTY_NAMES[i],
+                "Gameplay",
+                SM
+            );
+            final int k = i;
+            final int[] gameSettings = new int[3];
+            // for(int j = 0; j < 3; j++) {gameSettings[j] = SM.DIFFICULTIES[i][j];}
+            gameSettings[0] = SM.DIFFICULTIES[i][0];
+            gameSettings[1] = SM.DIFFICULTIES[i][1];
+            gameSettings[2] = SM.DIFFICULTIES[i][2];
+
+            diffButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // chooseDiffStartGame(k);
+                    SM.startGame(gameSettings[0], 
+                                gameSettings[1], 
+                                gameSettings[2], 
+                                k);
+                }
+            });
+            settingsPanel.add(diffButton);
+        }
         
-        ChangeSceneButton playbutton = new ChangeSceneButton(
-            "Play",
-            "Gameplay",
-            SM
-        );
-        playbutton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("size: "+ getSizeSetting() + " diff: " +  getDiffSetting());
-                // SM.gameManager.setSettings(getSizeSetting(), getDiffSetting());
-                // SM.gameManager.initGame(getSizeSetting(), getDiffSetting());
-                // SM.gameManager.initGame(8, 8);
-                // SM.gameManager.resetGame();
-                SM.startGame(getSizeSetting(), getDiffSetting());
-            }
-        });
-
-
         this.panel.add(backToMenuButton); 
-        this.panel.add(playbutton);
         this.panel.add(settingsPanel);
     }
 
