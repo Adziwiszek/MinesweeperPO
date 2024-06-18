@@ -1,38 +1,42 @@
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Container;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.imageio.*;
+import java.io.*;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class SceneManager { 
-    private JFrame frame = new JFrame("Minesweeper!");
-    private ArrayList<MyScene> scenes;
+    /* Block settings. */
+    public static final Color CLICKED_COLOR = new Color(209, 186, 255);
+    public static final Color UNCLICKED_COLOR = new Color(115, 88, 88);
+    public static final Color FLAG_COLOR = new Color(255, 0, 0);
+    // These are sizes for special characters that symbolize bombs and flags.
+    public static final int[] PIC_SIZES = {20, 14, 13};
+    public static final int[] TEXT_SIZES = {23, 18, 17};
 
+    private JFrame frame = new JFrame("Minesweeper!");
+
+    /* Used for switching between different scenes */
+    private ArrayList<MyScene> scenes;
     private Container contentPane = frame.getContentPane();
     private JPanel cardPanel = new JPanel();
     private CardLayout cardLayout = new CardLayout();
-    private Component currentComponent;
 
+    /*  */
     private GameplayScene gameplayScene;
     public GameLogic gameManager;
-    private int difficulty = 0;
-    public final int MAXDIFFICULTY = 3;
-    public final int DEFAULT_SIZE = 8;
-    public final int DEFAULT_BOMBS = 8;
+
+    /* Difficulty settings
+     * {width of map, height of map, number of bombs}
+     */
     public final int EASY_DIFFICULTY[] = {8, 8, 10};
     public final int MEDIUM_DIFFICULTY[] = {16, 16, 40};
     public final int HARD_DIFFICULTY[] = {30, 16, 99};
     public final int DIFFICULTIES[][] = 
         {EASY_DIFFICULTY, MEDIUM_DIFFICULTY, HARD_DIFFICULTY};
     public final String DIFFICULTY_NAMES[] = {"Easy", "Medium", "Hard"};
-    public final int DEFAULT_DIFFICULTY = 0;
-    public final Integer[] SIZE_SETTINGS = {6, 7, 8, 9 ,10, 11, 12};
-    public final Integer[] BOMB_SETTINGS = {6, 7, 8, 9, 10, 11, 12,
-                                    13, 14, 15, 16, 17, 18};
-    
+
     public SceneManager(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -40,7 +44,7 @@ public class SceneManager {
         cardPanel.setLayout(cardLayout);
 
         gameplayScene = new GameplayScene(this);
-        gameManager = new GameLogic(gameplayScene);
+        gameManager = new GameLogic();
 
         scenes = new ArrayList();
         scenes.add(new MainMenuScene(this));
@@ -65,13 +69,9 @@ public class SceneManager {
         SceneManager man = new SceneManager();
     }
 
-    public void startGame(int sizeX, int sizeY, int bombs, int diff){
-        this.gameManager.initGame(sizeX, sizeY, bombs, diff);
+    public void startGame(int sizeX, int sizeY, int bombs, int fontSize){
+        this.gameManager.initGame(sizeX, sizeY, bombs, fontSize);
         this.gameManager.resetGame();
         this.gameplayScene.setGamePanel();
     }
-
-    public void setDifficulty(int dif) { this.difficulty = dif % MAXDIFFICULTY; }
-
-    public int getDifficulty() { return this.difficulty; }
 }

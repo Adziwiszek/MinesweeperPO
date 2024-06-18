@@ -5,10 +5,16 @@ import javax.imageio.*;
 import java.io.*;
 
 public class GameplayScene  extends MyScene{
+    //
     JPanel gamePanel = new JPanel(new GridLayout());
-    JScrollPane scrollPane; // used to fix the board scaling
+    // Used to fix the board scaling
+    JScrollPane scrollPane; 
 
     public GameplayScene(SceneManager SM_){
+        /* SM_ - parent class 
+         * Setups gameplay scenes, initializes buttons for reseting game and
+         * returning to main menu.
+        */
         super("Gameplay", Color.green, SM_);
         this.panel.setLayout(new BorderLayout());   
 
@@ -31,7 +37,6 @@ public class GameplayScene  extends MyScene{
             }
         });
         upperRow.add(backToMenuButton);
-        upperRow.add(new JLabel("Graj:))"));
         upperRow.add(reset);
         
         this.panel.add(upperRow, BorderLayout.NORTH);         
@@ -39,9 +44,9 @@ public class GameplayScene  extends MyScene{
     }
 
     public void setGamePanel(){
+        /* Resets JPanel that stores game tiles. */
         this.gamePanel.removeAll();
         this.scrollPane = new JScrollPane(SM.gameManager.getPanel());
         this.gamePanel.add(scrollPane);
-        // this.gamePanel.add(SM.gameManager.getPanel());
     }
 }
