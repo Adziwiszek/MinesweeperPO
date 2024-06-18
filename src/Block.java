@@ -8,8 +8,8 @@ import javax.swing.SwingUtilities;
 
 public class Block extends JButton {
     public final Color UNCOLOR = new Color(115, 88, 88);
-    private final int[] PIC_SIZES = {20, 15, 7};
-    private final int[] TEXT_SIZES = {18, 13, 13};
+    private final int[] PIC_SIZES = {20, 14, 13};
+    private final int[] TEXT_SIZES = {20, 16, 13};
 
     private int state = 0;
     private boolean uncovered = false; 
