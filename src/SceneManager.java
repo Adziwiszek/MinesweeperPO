@@ -1,20 +1,33 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.imageio.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class SceneManager { 
     /* Block settings. */
     public static final Color CLICKED_COLOR = new Color(209, 186, 255);
     public static final Color UNCLICKED_COLOR = new Color(115, 88, 88);
     public static final Color FLAG_COLOR = new Color(255, 0, 0);
+    public static final Color BOMB_COLOR = new Color(0, 0, 0);
+    public static final Color[] NUMBER_COLORS = {
+        new Color(0, 0, 204), // 1 - blue
+        new Color(0, 102, 0), // 2 - green
+        new Color(204, 0, 0), // 3 - red
+        new Color(0, 0, 102), // 4 - dark blue
+        new Color(102, 51, 0), // 5 - brown
+        new Color(0, 220, 220), // 6 - cyan
+        new Color(0, 0, 0), // 7 - black
+        new Color(128, 128, 128) // 8 - grey
+    };
     // These are sizes for special characters that symbolize bombs and flags.
     public static final int[] PIC_SIZES = {20, 14, 13};
     public static final int[] TEXT_SIZES = {23, 18, 17};
 
+    /* Main window of the program. */
     private JFrame frame = new JFrame("Minesweeper!");
 
     /* Used for switching between different scenes */
@@ -30,12 +43,19 @@ public class SceneManager {
     /* Difficulty settings
      * {width of map, height of map, number of bombs}
      */
-    public final int EASY_DIFFICULTY[] = {8, 8, 10};
-    public final int MEDIUM_DIFFICULTY[] = {16, 16, 40};
-    public final int HARD_DIFFICULTY[] = {30, 16, 99};
-    public final int DIFFICULTIES[][] = 
+    public static final int EASY_DIFFICULTY[] = {8, 8, 10};
+    public static final int MEDIUM_DIFFICULTY[] = {16, 16, 40};
+    public static final int HARD_DIFFICULTY[] = {30, 16, 99};
+    public static final int DIFFICULTIES[][] = 
         {EASY_DIFFICULTY, MEDIUM_DIFFICULTY, HARD_DIFFICULTY};
-    public final String DIFFICULTY_NAMES[] = {"Easy", "Medium", "Hard"};
+    public static final String DIFFICULTY_NAMES[] = {"Easy", "Medium", "Hard"};
+
+    /* SCENE NAMES */
+    /* If some button changes active scene to this it closes the program. */
+    public static final String EXIT_NAME = "Exit"; 
+    public static final String MENU_SCENE_NAME = "Menu";
+    public static final String DIFFICULTY_SCENE_NAME = "Difficulty";
+    public static final String GAMEPLAY_SCENE_NAME = "Gameplay";
 
     public SceneManager(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,31 +67,43 @@ public class SceneManager {
         gameManager = new GameLogic();
 
         scenes = new ArrayList();
+        scenes.add(new DifficultyScene(this));
+
         scenes.add(new MainMenuScene(this));
         scenes.add(gameplayScene);
-        scenes.add(new DifficultyScene(this));
         for (MyScene scene : scenes) {
-            cardPanel.add(scene.getPanel(), scene.getName());
+            cardPanel.add(scene, scene.getName());
         }
         
         contentPane.setLayout(new BorderLayout());
         contentPane.add(cardPanel,BorderLayout.CENTER);
 
         frame.setLocationRelativeTo(null);
+        // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // frame.setUndecorated(true);
         frame.setVisible(true);
     }
     
+
     public void changeScene(String newSceneName){
+        if(newSceneName.equals(EXIT_NAME)){ 
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        }
         this.cardLayout.show(this.cardPanel, newSceneName);
+    }
+
+    /* Initalizes new game board with given size, number of bombs and font size.
+     * fontSize - this selects one of the 3 premade size settings, based on the
+     *      chosen difficulty. If this number is not in {0, 1, 2} it takes 
+     *      (fontSize % 3).
+     */
+    public void startGame(int sizeX, int sizeY, int bombs, int fontSize){
+        this.gameManager.initGame(sizeX, sizeY, bombs, fontSize);
+        this.gameManager.resetGame();
+        this.gameplayScene.resetGamePanel();
     }
 
     public static void main(String[] args) {
         SceneManager man = new SceneManager();
-    }
-
-    public void startGame(int sizeX, int sizeY, int bombs, int fontSize){
-        this.gameManager.initGame(sizeX, sizeY, bombs, fontSize);
-        this.gameManager.resetGame();
-        this.gameplayScene.setGamePanel();
-    }
+    } 
 }

@@ -7,12 +7,12 @@ import java.util.Arrays;
 
 public class DifficultyScene extends MyScene {
     public DifficultyScene(SceneManager SM_){
-        super("Difficulty", Color.green, SM_);
-        this.panel.setLayout(new GridBagLayout());   
+        super(SceneManager.DIFFICULTY_SCENE_NAME, Color.green, SM_);
+        this.setLayout(new GridBagLayout());   
 
         ChangeSceneButton backToMenuButton = new ChangeSceneButton(
             "Back to Menu",
-            "Menu",
+            SceneManager.MENU_SCENE_NAME,
             SM
         );
         JPanel settingsPanel = new JPanel(new GridBagLayout());
@@ -20,12 +20,12 @@ public class DifficultyScene extends MyScene {
         ChangeSceneButton diffButton;
         for(int i = 0; i < 3; i++){
             diffButton = new ChangeSceneButton(
-                SM.DIFFICULTY_NAMES[i],
-                "Gameplay",
+                SceneManager.DIFFICULTY_NAMES[i],
+                SceneManager.GAMEPLAY_SCENE_NAME,
                 SM
             );
             final int k = i;
-            final int[] gameSettings = Arrays.copyOf(SM.DIFFICULTIES[i], 3);
+            final int[] gameSettings = Arrays.copyOf(SceneManager.DIFFICULTIES[i], 3);
 
             diffButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -38,7 +38,7 @@ public class DifficultyScene extends MyScene {
             settingsPanel.add(diffButton);
         }
         
-        this.panel.add(backToMenuButton); 
-        this.panel.add(settingsPanel);
+        this.add(backToMenuButton); 
+        this.add(settingsPanel);
     }
 }

@@ -122,19 +122,25 @@ public class GameLogic {
                         mineField[pos.y][pos.x].setState(-bombs);
                     }
                     else {
-                        int newY = pos.y + y;
-                        int newX = pos.x + x;
-                        if(newX < 0 || newX >= this.sizeX || 
-                           newY < 0 || newY >= this.sizeY){
-                            continue;
+                        if(checkIfValidPosition(pos, x, y)){
+                            mineField[pos.y + y][pos.x + x].incrementState(1);
                         }
-                        mineField[newY][newX].incrementState(1);    
+                        // int newY = pos.y + y;
+                        // int newX = pos.x + x;
+                        // if(newX < 0 || newX >= this.sizeX || 
+                        //    newY < 0 || newY >= this.sizeY){
+                        //     continue;
+                        // }
+                        // mineField[newY][newX].incrementState(1);    
                     }
                 }   
             }
         }
     } 
 
+    /* Takes as an input list of available positions and starting position and
+     * returns list of all positions that are viable for having a bomb.
+     */
     private ArrayList<Position> secureStartingPos(ArrayList<Position> arr,
                                                 Position pos){    
         boolean safePos[][] = new boolean[sizeY][sizeX];
@@ -156,6 +162,7 @@ public class GameLogic {
     }
 
     private void uncoverAllBombs(){
+        unflagAllFields();
         for(int i = 0; i < sizeX; i++){
             for(int j = 0; j < sizeY; j++){
                 if(mineField[j][i].getState() < 0){

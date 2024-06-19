@@ -1,12 +1,19 @@
 import java.awt.Color;
+import java.awt.GridBagLayout;
 
 public class MainMenuScene extends MyScene {
     public MainMenuScene(SceneManager SM){
-        super("Menu", Color.blue, SM);
+        super(SceneManager.MENU_SCENE_NAME, Color.blue, SM);
+        super.setLayout(new GridBagLayout());
 
-        super.addComponent(new ChangeSceneButton(
+        super.add(new ChangeSceneButton(
             "Play",
-            "Difficulty",
+            SceneManager.DIFFICULTY_SCENE_NAME,
+            SM
+        ));
+        super.add(new ChangeSceneButton(
+            "Exit",
+            SceneManager.EXIT_NAME,
             SM
         ));
     }

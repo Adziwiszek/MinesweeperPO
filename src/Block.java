@@ -69,12 +69,19 @@ public class Block extends JButton {
                             Font.PLAIN, 
                             SceneManager.PIC_SIZES[fontSize]));
                 this.setText("⬤");
+                this.setForeground(SceneManager.BOMB_COLOR);
             }
             else{
                 this.setFont(new Font("Ariel", 
-                            Font.PLAIN, 
+                            Font.BOLD, 
                             SceneManager.TEXT_SIZES[fontSize]));
-                this.setText((this.state > 0 ? this.state : "")+"");
+                if(this.state > 0){
+                    this.setText(this.state+"");
+                    this.setForeground(SceneManager.NUMBER_COLORS[this.state-1]);
+                }
+                else{
+                    this.setText("");
+                }
             }
         }
         this.setBackground(SceneManager.CLICKED_COLOR);
