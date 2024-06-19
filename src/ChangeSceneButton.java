@@ -11,6 +11,7 @@ public class ChangeSceneButton extends JButton{
     public ChangeSceneButton(String buttonText, String newSceneName_, 
     SceneManager SM_){
         super(buttonText);
+        this.setBackground(SceneManager.DEFAULT_BUTTON_COLOR);
         this.newSceneName = newSceneName_;
         this.SM = SM_;
         this.addActionListener(new ActionListener() {

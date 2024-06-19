@@ -2,30 +2,57 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class SceneManager { 
     /* Block settings. */
-    public static final Color CLICKED_COLOR = new Color(209, 186, 255);
-    public static final Color UNCLICKED_COLOR = new Color(115, 88, 88);
+    public static final Color CLICKED_COLOR = new Color(168, 185, 243);
+    public static final Color UNCLICKED_COLOR = new Color(27, 16, 104);
     public static final Color FLAG_COLOR = new Color(255, 0, 0);
     public static final Color BOMB_COLOR = new Color(0, 0, 0);
     public static final Color[] NUMBER_COLORS = {
-        new Color(0, 0, 204), // 1 - blue
+        new Color(0, 80, 255), // 1 - blue
         new Color(0, 102, 0), // 2 - green
         new Color(204, 0, 0), // 3 - red
-        new Color(0, 0, 102), // 4 - dark blue
-        new Color(102, 51, 0), // 5 - brown
+        new Color(0, 20, 80), // 4 - dark blue
+        new Color(142, 51, 0), // 5 - brown
         new Color(0, 220, 220), // 6 - cyan
         new Color(0, 0, 0), // 7 - black
         new Color(128, 128, 128) // 8 - grey
     };
-    // These are sizes for special characters that symbolize bombs and flags.
+    /* These are sizes for special characters that symbolize bombs and flags. */
     public static final int[] PIC_SIZES = {20, 14, 13};
     public static final int[] TEXT_SIZES = {23, 18, 17};
+
+    /* Difficulty settings
+     * {map width, map height, number of bombs}
+     */
+    public static final int EASY_DIFFICULTY[] = {8, 8, 10};
+    public static final int MEDIUM_DIFFICULTY[] = {16, 16, 40};
+    public static final int HARD_DIFFICULTY[] = {30, 16, 99};
+    public static final int DIFFICULTIES[][] = 
+        {EASY_DIFFICULTY, MEDIUM_DIFFICULTY, HARD_DIFFICULTY};
+    public static final String DIFFICULTY_NAMES[] = {"Easy", "Medium", "Hard"};
+
+    public static final String INTRO_TEXT = 
+        "To uncover board click on with left mouse button. \n" +
+        "Numbers indicate how many bombs are around each tile. \n" +
+        "Click on tiles with right mouse button to flag them, where you suspect the bombs might be";
+
+    /* SCENE NAMES */
+    /* If some button changes active scene to this it closes the program. */
+    public static final String EXIT_NAME = "Exit"; 
+    public static final String MENU_SCENE_NAME = "Menu";
+    public static final String DIFFICULTY_SCENE_NAME = "Difficulty";
+    public static final String GAMEPLAY_SCENE_NAME = "Gameplay";
+    public static final Color DEFAULT_SCENE_BACKGROUND_COLOR = new Color(27, 16, 104);
+    public static final Color DEFAULT_BUTTON_COLOR = new Color(168, 185, 243);
 
     /* Main window of the program. */
     private JFrame frame = new JFrame("Minesweeper!");
@@ -40,22 +67,8 @@ public class SceneManager {
     private GameplayScene gameplayScene;
     public GameLogic gameManager;
 
-    /* Difficulty settings
-     * {width of map, height of map, number of bombs}
-     */
-    public static final int EASY_DIFFICULTY[] = {8, 8, 10};
-    public static final int MEDIUM_DIFFICULTY[] = {16, 16, 40};
-    public static final int HARD_DIFFICULTY[] = {30, 16, 99};
-    public static final int DIFFICULTIES[][] = 
-        {EASY_DIFFICULTY, MEDIUM_DIFFICULTY, HARD_DIFFICULTY};
-    public static final String DIFFICULTY_NAMES[] = {"Easy", "Medium", "Hard"};
-
-    /* SCENE NAMES */
-    /* If some button changes active scene to this it closes the program. */
-    public static final String EXIT_NAME = "Exit"; 
-    public static final String MENU_SCENE_NAME = "Menu";
-    public static final String DIFFICULTY_SCENE_NAME = "Difficulty";
-    public static final String GAMEPLAY_SCENE_NAME = "Gameplay";
+    private static GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    private static GraphicsDevice ev = env.getDefaultScreenDevice();
 
     public SceneManager(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,13 +77,13 @@ public class SceneManager {
         cardPanel.setLayout(cardLayout);
 
         gameplayScene = new GameplayScene(this);
-        gameManager = new GameLogic();
+        gameManager = new GameLogic(this);
 
         scenes = new ArrayList();
-        scenes.add(new DifficultyScene(this));
-
         scenes.add(new MainMenuScene(this));
+        scenes.add(new DifficultyScene(this));
         scenes.add(gameplayScene);
+
         for (MyScene scene : scenes) {
             cardPanel.add(scene, scene.getName());
         }
@@ -79,8 +92,8 @@ public class SceneManager {
         contentPane.add(cardPanel,BorderLayout.CENTER);
 
         frame.setLocationRelativeTo(null);
-        // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        // frame.setUndecorated(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(false);
         frame.setVisible(true);
     }
     
@@ -88,7 +101,7 @@ public class SceneManager {
     public void changeScene(String newSceneName){
         if(newSceneName.equals(EXIT_NAME)){ 
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-        }
+        } 
         this.cardLayout.show(this.cardPanel, newSceneName);
     }
 
@@ -101,6 +114,10 @@ public class SceneManager {
         this.gameManager.initGame(sizeX, sizeY, bombs, fontSize);
         this.gameManager.resetGame();
         this.gameplayScene.resetGamePanel();
+    }
+
+    public JFrame getFrame(){
+        return this.frame;
     }
 
     public static void main(String[] args) {

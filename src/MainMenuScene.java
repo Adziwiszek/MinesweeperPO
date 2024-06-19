@@ -3,7 +3,7 @@ import java.awt.GridBagLayout;
 
 public class MainMenuScene extends MyScene {
     public MainMenuScene(SceneManager SM){
-        super(SceneManager.MENU_SCENE_NAME, Color.blue, SM);
+        super(SceneManager.MENU_SCENE_NAME, SM);
         super.setLayout(new GridBagLayout());
 
         super.add(new ChangeSceneButton(

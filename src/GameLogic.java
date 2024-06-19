@@ -17,6 +17,11 @@ public class GameLogic {
     private int bombs;
     private int coveredFields;
     private ArrayList<Position> mapPositions;
+    private SceneManager SM;
+
+    public GameLogic(SceneManager SM_){
+        this.SM = SM_;
+    }
 
     public void initGame(int sizeX_, int sizeY_, int bombs_, int diff){
         this.sizeX = sizeX_;
@@ -87,7 +92,7 @@ public class GameLogic {
         if(this.gameStatus == 0 && !curBlock.getFlagged()){         
             if(state < 0){
                 this.uncoverAllBombs();
-                JOptionPane.showMessageDialog(null, 
+                JOptionPane.showMessageDialog(this.SM.getFrame(), 
                 "You Lost!!!");
                 this.gameStatus = -1;
             }
@@ -124,14 +129,7 @@ public class GameLogic {
                     else {
                         if(checkIfValidPosition(pos, x, y)){
                             mineField[pos.y + y][pos.x + x].incrementState(1);
-                        }
-                        // int newY = pos.y + y;
-                        // int newX = pos.x + x;
-                        // if(newX < 0 || newX >= this.sizeX || 
-                        //    newY < 0 || newY >= this.sizeY){
-                        //     continue;
-                        // }
-                        // mineField[newY][newX].incrementState(1);    
+                        }   
                     }
                 }   
             }
