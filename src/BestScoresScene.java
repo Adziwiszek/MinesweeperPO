@@ -1,9 +1,5 @@
+import java.awt.GridBagLayout;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.imageio.*;
-import java.io.*;
-import java.util.*;
 
 public class BestScoresScene extends MyScene{
     private ScoreManager scoreManager = ScoreManager.getInstance();
@@ -11,15 +7,19 @@ public class BestScoresScene extends MyScene{
     public BestScoresScene(SceneManager SM){
         super(SceneManager.SCORES_SCENE_NAME, SM);
         super.setLayout(new GridBagLayout());
+        Box box = Box.createVerticalBox();
 
-        super.add(scoreManager.getScoresTable(SceneManager.DIFFICULTY_NAMES[0]));
-        super.add(scoreManager.getScoresTable(SceneManager.DIFFICULTY_NAMES[1]));
-        super.add(scoreManager.getScoresTable(SceneManager.DIFFICULTY_NAMES[2]));
+        JPanel scorePanel = new JPanel();
+        scorePanel.add(scoreManager.getScoresTable(SceneManager.DIFFICULTY_NAMES[0]));
+        scorePanel.add(scoreManager.getScoresTable(SceneManager.DIFFICULTY_NAMES[1]));
+        scorePanel.add(scoreManager.getScoresTable(SceneManager.DIFFICULTY_NAMES[2]));
+        box.add(scorePanel);
 
-        super.add(new ChangeSceneButton(
+        box.add(new ChangeSceneButton(
             "Back to menu",
             SceneManager.MENU_SCENE_NAME,
             SM
         ));
+        this.add(box);
     }
 }

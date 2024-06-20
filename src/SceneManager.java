@@ -131,11 +131,8 @@ public class SceneManager {
         else{
             int finalTime = this.gameTimer.getTime();
             String name = JOptionPane.showInputDialog(frame, "You Won, give us your name!!! Your time: "+finalTime+" seconds");
-            // JOptionPane.showMessageDialog(this.frame, 
-            //     "You Won!!! Your time: "+finalTime+" seconds");
-            System.out.println(name);
             scoreManager.addScore(difficulty, name, finalTime);
-            scoreManager.debugPrintScores();
+            //scoreManager.debugPrintScores();
         }
     }
 

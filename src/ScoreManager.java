@@ -7,8 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.naming.ldap.HasControls;
-
 public class ScoreManager {
     private ArrayList<Score> scores = new ArrayList<>();;
     private static ScoreManager singleInstance = null;
@@ -18,10 +16,13 @@ public class ScoreManager {
     private HashMap<String, ScoreTable> tables = new HashMap<>();
 
     private ScoreManager(){
+        /* I'm adding each table manually, because current implementation
+         * requires it to be this way for all of this to work :| 
+         * (maybe this will be changed someday...)
+         */
         tables.put(SceneManager.DIFFICULTY_NAMES[0], easyScoresTable);
         tables.put(SceneManager.DIFFICULTY_NAMES[1], mediumScoresTable);
-        tables.put(SceneManager.DIFFICULTY_NAMES[2], hardScoresTable);  
-              
+        tables.put(SceneManager.DIFFICULTY_NAMES[2], hardScoresTable);          
     }
 
     public static synchronized ScoreManager getInstance(){
@@ -39,9 +40,9 @@ public class ScoreManager {
     }
     /* TODO:
      * add saving and reading from file - DONE
-     * add saving persons name after winning 
-     * add debug writing scores
-     * add score tables to main menu
+     * add saving persons name after winning  DONE
+     * add debug writing scores DONE
+     * add score tables to main menu DONE 
      * ADD DOCUMENTATION
      * and that's it!!! 
      */
@@ -50,7 +51,9 @@ public class ScoreManager {
         String diffName = SceneManager.DIFFICULTY_NAMES[diff];
         scores.add(new Score(diffName, playerName, timeScore));
         saveScoreToFile();
-        easyScoresTable.updateStats();
+        for(int i = 0; i < SceneManager.DIFFICULTY_NAMES.length; i++){
+            tables.get(SceneManager.DIFFICULTY_NAMES[i]).updateStats();
+        }
     }
 
     public void debugPrintScores(){

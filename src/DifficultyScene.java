@@ -25,9 +25,7 @@ public class DifficultyScene extends MyScene {
         JLabel lab3 = new JLabel("Left click on a tile to uncover it and right click to mark it as a potential mine.");
         lab3.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         box.add(lab3);
-        textPanel.add(box);
-
-
+        
         ChangeSceneButton backToMenuButton = new ChangeSceneButton(
             "Back to Menu",
             SceneManager.MENU_SCENE_NAME,
@@ -56,6 +54,8 @@ public class DifficultyScene extends MyScene {
             settingsPanel.add(diffButton);
         }
         box.add(settingsPanel);
+
+        textPanel.add(box);
         this.add(textPanel);        
     }
 }
