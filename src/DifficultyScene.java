@@ -1,7 +1,5 @@
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -17,14 +15,14 @@ public class DifficultyScene extends MyScene {
         JPanel textPanel = new JPanel();
         Box box = Box.createVerticalBox();
 
-        // TODO: make this better
-        JLabel lab1 = new JLabel("To uncover board click on with left mouse button.");
+        /* Tutorial text. */
+        JLabel lab1 = new JLabel("To win the game all non-mine cells must be opened without opening a mine.");
         lab1.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         box.add(lab1);
-        JLabel lab2 = new JLabel("Numbers indicate how many bombs are around each tile.");
+        JLabel lab2 = new JLabel("Each tile has a number that indicates how many mines are around it.");
         lab2.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         box.add(lab2);
-        JLabel lab3 = new JLabel("Click on tiles with right mouse button to flag them, where you suspect the bombs might be");
+        JLabel lab3 = new JLabel("Left click on a tile to uncover it and right click to mark it as a potential mine.");
         lab3.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         box.add(lab3);
         textPanel.add(box);
