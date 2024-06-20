@@ -1,10 +1,11 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.imageio.*;
-import java.io.*;
+import java.awt.BorderLayout;
 import java.util.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.*;
 
 public class ScoreTable extends JPanel{
     private ScoreManager scoreManager;
@@ -12,6 +13,7 @@ public class ScoreTable extends JPanel{
     private DefaultTableModel tabModel;
     private JScrollPane scrollPane;
     private JTable table;
+    TableRowSorter<TableModel> sorter;
     private String difficulty;
 
     public ScoreTable(String difficulty){
@@ -22,7 +24,6 @@ public class ScoreTable extends JPanel{
         
         String[] columnNames = {"Name", "Time"};
 
-        // Convert scores to Object[][] for DefaultTableModel
         Object[][] data = new Object[scores.size()][2];
         for (int i = 0; i < scores.size(); i++) {
             data[i][0] = scores.get(i).getPlayerName();
@@ -31,10 +32,16 @@ public class ScoreTable extends JPanel{
         
         tabModel = new DefaultTableModel(data, columnNames);
         table = new JTable(tabModel);
+        sorter = new TableRowSorter<TableModel>(table.getModel());
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
+        table.setRowSorter(sorter);
         scrollPane = new JScrollPane(table);
 
         JLabel diffLabel = new JLabel(difficulty);
         diffLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        sorter.sort();
 
         this.add(diffLabel, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
@@ -48,6 +55,7 @@ public class ScoreTable extends JPanel{
         for (Score score : scores) {
             tabModel.addRow(new Object[]{score.getPlayerName(), score.getTimeScore()});
         }
+        sorter.sort();
     }
     
     
