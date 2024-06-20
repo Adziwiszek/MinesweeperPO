@@ -14,6 +14,5 @@ And run with: \
 ```java -jar MinesweeperPO.jar``` \
 \
 Documentation is in ```docs/html/annotated``` \
-\
 
 Adam Dziwiszek
