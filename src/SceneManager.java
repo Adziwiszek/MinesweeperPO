@@ -60,6 +60,8 @@ public class SceneManager {
     private GameplayScene gameplayScene;
     public GameLogic gameManager;
     public SolveTimer gameTimer = new SolveTimer();
+    private ScoreManager scoreManager = new ScoreManager();
+    public static final String SAVEFILE_NAME = "save.ser";
 
     private static GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
     private static GraphicsDevice ev = env.getDefaultScreenDevice();
@@ -72,6 +74,7 @@ public class SceneManager {
 
         gameplayScene = new GameplayScene(this);
         gameManager = new GameLogic(this);
+        scoreManager.loadScoreFromFile();
 
         scenes = new ArrayList();
         scenes.add(new MainMenuScene(this));
