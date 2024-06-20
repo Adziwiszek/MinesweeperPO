@@ -1,7 +1,15 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class SceneManager { 
     /* Block settings. */
@@ -26,7 +34,7 @@ public class SceneManager {
     /* Difficulty settings
      * {map width, map height, number of bombs}
      */
-    public static final int EASY_DIFFICULTY[] = {8, 8, 10};
+    public static final int EASY_DIFFICULTY[] = {8, 8, 1};
     public static final int MEDIUM_DIFFICULTY[] = {16, 16, 40};
     public static final int HARD_DIFFICULTY[] = {30, 16, 99};
     public static final int DIFFICULTIES[][] = 
@@ -60,6 +68,7 @@ public class SceneManager {
     private GameplayScene gameplayScene;
     public GameLogic gameManager;
     public SolveTimer gameTimer = new SolveTimer();
+    private int difficulty = 0;
     private ScoreManager scoreManager = new ScoreManager();
     public static final String SAVEFILE_NAME = "save.ser";
 
@@ -75,6 +84,7 @@ public class SceneManager {
         gameplayScene = new GameplayScene(this);
         gameManager = new GameLogic(this);
         scoreManager.loadScoreFromFile();
+        scoreManager.debugPrintScores();
 
         scenes = new ArrayList();
         scenes.add(new MainMenuScene(this));
@@ -112,6 +122,7 @@ public class SceneManager {
         this.gameManager.resetGame();
         this.gameplayScene.resetGamePanel();
         this.gameTimer.resetTimer();
+        this.difficulty = fontSize;
     }
 
     public void endGame(int gameResult){
@@ -122,10 +133,12 @@ public class SceneManager {
         }
         else{
             int finalTime = this.gameTimer.getTime();
-            var name = JOptionPane.showInputDialog(frame, "You Won, give us your name!!! Your time: "+finalTime+" seconds");
+            String name = JOptionPane.showInputDialog(frame, "You Won, give us your name!!! Your time: "+finalTime+" seconds");
             // JOptionPane.showMessageDialog(this.frame, 
             //     "You Won!!! Your time: "+finalTime+" seconds");
             System.out.println(name);
+            scoreManager.addScore(difficulty, name, finalTime);
+            scoreManager.debugPrintScores();
         }
     }
 
