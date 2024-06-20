@@ -5,14 +5,23 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.naming.ldap.HasControls;
 
 public class ScoreManager {
     private ArrayList<Score> scores = new ArrayList<>();;
     private static ScoreManager singleInstance = null;
     private ScoreTable easyScoresTable;
+    private ScoreTable mediumScoresTable;
+    private ScoreTable hardScoresTable;
+    private HashMap<String, ScoreTable> tables = new HashMap<>();
 
     private ScoreManager(){
-        
+        tables.put(SceneManager.DIFFICULTY_NAMES[0], easyScoresTable);
+        tables.put(SceneManager.DIFFICULTY_NAMES[1], mediumScoresTable);
+        tables.put(SceneManager.DIFFICULTY_NAMES[2], hardScoresTable);  
+              
     }
 
     public static synchronized ScoreManager getInstance(){
@@ -22,11 +31,11 @@ public class ScoreManager {
         return singleInstance;
     }
 
-    public ScoreTable getEasyScoresTable() {
-        if (easyScoresTable == null) {
-            easyScoresTable = new ScoreTable(SceneManager.DIFFICULTY_NAMES[0]);
+    public ScoreTable getScoresTable(String difficulty) {
+        if (tables.get(difficulty) == null) {
+            tables.put(difficulty, new ScoreTable(difficulty));
         }
-        return easyScoresTable;
+        return tables.get(difficulty);
     }
     /* TODO:
      * add saving and reading from file - DONE

@@ -41,17 +41,13 @@ public class SceneManager {
         {EASY_DIFFICULTY, MEDIUM_DIFFICULTY, HARD_DIFFICULTY};
     public static final String DIFFICULTY_NAMES[] = {"Easy", "Medium", "Hard"};
 
-    public static final String INTRO_TEXT = 
-        "To uncover board click on with left mouse button. \n" +
-        "Numbers indicate how many bombs are around each tile. \n" +
-        "Click on tiles with right mouse button to flag them, where you suspect the bombs might be";
-
     /* SCENE NAMES */
     /* If some button changes active scene to this it closes the program. */
     public static final String EXIT_NAME = "Exit"; 
     public static final String MENU_SCENE_NAME = "Menu";
     public static final String DIFFICULTY_SCENE_NAME = "Difficulty";
     public static final String GAMEPLAY_SCENE_NAME = "Gameplay";
+    public static final String SCORES_SCENE_NAME = "Scores";
     public static final Color DEFAULT_SCENE_BACKGROUND_COLOR = new Color(27, 16, 104);
     public static final Color DEFAULT_BUTTON_COLOR = new Color(168, 185, 243);
 
@@ -90,6 +86,7 @@ public class SceneManager {
         scenes.add(new MainMenuScene(this));
         scenes.add(new DifficultyScene(this));
         scenes.add(gameplayScene);
+        scenes.add(new BestScoresScene(this));
 
         for (MyScene scene : scenes) {
             cardPanel.add(scene, scene.getName());
