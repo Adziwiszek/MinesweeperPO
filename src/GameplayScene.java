@@ -22,6 +22,7 @@ public class GameplayScene  extends MyScene{
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SM.gameManager.resetGame();
+                SM.gameTimer.resetTimer();
             }
         });
 
@@ -30,12 +31,8 @@ public class GameplayScene  extends MyScene{
             SceneManager.MENU_SCENE_NAME,
             SM
         );
-        backToMenuButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SM.gameManager.resetGame();
-            }
-        });
         upperRow.add(backToMenuButton);
+        upperRow.add(SM.gameTimer.getLabel());
         upperRow.add(reset);
         
         this.add(upperRow, BorderLayout.NORTH);         
@@ -47,5 +44,12 @@ public class GameplayScene  extends MyScene{
         this.gamePanel.removeAll();
         this.gamePanel.setBackground(SceneManager.DEFAULT_SCENE_BACKGROUND_COLOR);
         this.gamePanel.add(new JScrollPane(SM.gameManager.getPanel()));
+    }
+
+    public void endGame(int gameStatus){
+
+    }
+
+    public void startGame(){
     }
 }

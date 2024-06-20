@@ -56,6 +56,7 @@ public class GameLogic {
     public void onClick(int state, boolean uncovered, Position pos){
         if(!gameStarted){
             gameStarted = true;
+            SM.gameTimer.startTimer();
             this.populateField(this.bombs, pos);
         }
 
@@ -92,9 +93,8 @@ public class GameLogic {
         if(this.gameStatus == 0 && !curBlock.getFlagged()){         
             if(state < 0){
                 this.uncoverAllBombs();
-                JOptionPane.showMessageDialog(this.SM.getFrame(), 
-                "You Lost!!!");
                 this.gameStatus = -1;
+                SM.endGame(this.gameStatus);
             }
             
             if(!curBlock.getUncovered()){                 
@@ -103,11 +103,10 @@ public class GameLogic {
             }
 
             if(this.coveredFields <= 0){
-                JOptionPane.showMessageDialog(null, 
-                "You Won!!!");
                 this.unflagAllFields();
                 this.uncoverAllBombs();
                 this.gameStatus = 1;
+                SM.endGame(this.gameStatus);
             }
         }
     }

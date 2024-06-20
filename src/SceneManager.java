@@ -1,14 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.event.WindowEvent;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class SceneManager { 
     /* Block settings. */
@@ -66,6 +59,7 @@ public class SceneManager {
     /*  */
     private GameplayScene gameplayScene;
     public GameLogic gameManager;
+    public SolveTimer gameTimer = new SolveTimer();
 
     private static GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
     private static GraphicsDevice ev = env.getDefaultScreenDevice();
@@ -114,6 +108,22 @@ public class SceneManager {
         this.gameManager.initGame(sizeX, sizeY, bombs, fontSize);
         this.gameManager.resetGame();
         this.gameplayScene.resetGamePanel();
+        this.gameTimer.resetTimer();
+    }
+
+    public void endGame(int gameResult){
+        this.gameTimer.stopTimer();
+        if(gameResult < 0){
+            JOptionPane.showMessageDialog(this.frame, 
+                "You Lost!!!");
+        }
+        else{
+            int finalTime = this.gameTimer.getTime();
+            var name = JOptionPane.showInputDialog(frame, "You Won, give us your name!!! Your time: "+finalTime+" seconds");
+            // JOptionPane.showMessageDialog(this.frame, 
+            //     "You Won!!! Your time: "+finalTime+" seconds");
+            System.out.println(name);
+        }
     }
 
     public JFrame getFrame(){
