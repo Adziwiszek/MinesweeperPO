@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['gamelogic_0',['GameLogic',['../class_game_logic.html',1,'']]],
-  ['gameplayscene_1',['GameplayScene',['../class_gameplay_scene.html',1,'']]]
+  ['mainmenuscene_0',['MainMenuScene',['../class_main_menu_scene.html',1,'']]],
+  ['myscene_1',['MyScene',['../class_my_scene.html',1,'']]]
 ];

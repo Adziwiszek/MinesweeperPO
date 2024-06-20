@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['difficultyscene_0',['DifficultyScene',['../class_difficulty_scene.html',1,'DifficultyScene'],['../class_difficulty_scene.html#a26960089ed51b509dc4474713598fb21',1,'DifficultyScene.DifficultyScene()']]]
+  ['exit_5fname_0',['EXIT_NAME',['../class_scene_manager.html#a16cd7c92c31e10ed9ed9799651a1d87e',1,'SceneManager']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['changescenebutton_0',['ChangeSceneButton',['../class_change_scene_button.html',1,'']]]
+  ['difficultyscene_0',['DifficultyScene',['../class_difficulty_scene.html',1,'']]]
 ];
