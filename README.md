@@ -13,7 +13,6 @@ If you want you can package this into jar file with: \
 And run with: \
 ```java -jar MinesweeperPO.jar``` \
 \
-Documentation is in ```docs/html/annotated``` \
-\
+Documentation is in ```docs/html/annotated``` 
 
 Adam Dziwiszek
