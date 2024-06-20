@@ -4,32 +4,30 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-
-class Score implements Serializable{
-    private String difficultyName;
-    private String playerName;
-    private int timeScore;
-
-    public Score(String difficultyName, String playerName, int timeScore){
-        this.difficultyName = difficultyName;
-        this.timeScore = timeScore;
-        this.playerName = playerName;
-    }
-
-    public int getTimeScore() { return timeScore; }
-    public String getDifficultyName() { return difficultyName; }
-    public String getPlayerName() { return playerName; }
-}
 
 public class ScoreManager {
     private ArrayList<Score> scores = new ArrayList<>();;
-    
-    public ScoreManager(){
+    private static ScoreManager singleInstance = null;
+    private ScoreTable easyScoresTable;
 
+    private ScoreManager(){
+        
     }
 
+    public static synchronized ScoreManager getInstance(){
+        if(singleInstance == null){
+            singleInstance = new ScoreManager();
+        }
+        return singleInstance;
+    }
+
+    public ScoreTable getEasyScoresTable() {
+        if (easyScoresTable == null) {
+            easyScoresTable = new ScoreTable(SceneManager.DIFFICULTY_NAMES[0]);
+        }
+        return easyScoresTable;
+    }
     /* TODO:
      * add saving and reading from file - DONE
      * add saving persons name after winning 
@@ -43,6 +41,7 @@ public class ScoreManager {
         String diffName = SceneManager.DIFFICULTY_NAMES[diff];
         scores.add(new Score(diffName, playerName, timeScore));
         saveScoreToFile();
+        easyScoresTable.updateStats();
     }
 
     public void debugPrintScores(){
@@ -50,6 +49,17 @@ public class ScoreManager {
             System.out.println("dif: " + score.getDifficultyName() + 
              ", player: " + score.getPlayerName() + ", time: "+ score.getTimeScore());
         }
+    }
+
+    /* Returns an array of Scores from a given difficulty. */
+    public ArrayList<Score> getScores(String difficulty){
+        ArrayList<Score> result = new ArrayList<>();
+        for (Score score : scores) {
+            if(score.getDifficultyName().equals(difficulty)){
+                result.add(score);
+            }
+        }
+        return result;
     }
 
     public void saveScoreToFile(){

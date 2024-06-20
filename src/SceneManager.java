@@ -69,7 +69,7 @@ public class SceneManager {
     public GameLogic gameManager;
     public SolveTimer gameTimer = new SolveTimer();
     private int difficulty = 0;
-    private ScoreManager scoreManager = new ScoreManager();
+    private ScoreManager scoreManager = ScoreManager.getInstance();
     public static final String SAVEFILE_NAME = "save.ser";
 
     private static GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
