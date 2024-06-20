@@ -1,9 +1,7 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
-import javax.imageio.*;
-import java.io.*;
 
+/*! Button that switches to a different scene. */
 public class ChangeSceneButton extends JButton{
     private String newSceneName;
     private SceneManager SM;
@@ -14,10 +12,8 @@ public class ChangeSceneButton extends JButton{
         this.setBackground(SceneManager.DEFAULT_BUTTON_COLOR);
         this.newSceneName = newSceneName_;
         this.SM = SM_;
-        this.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SM.changeScene(newSceneName);
-            }
+        this.addActionListener((ActionEvent e) -> {
+            SM.changeScene(newSceneName);
         });        
     }
 }

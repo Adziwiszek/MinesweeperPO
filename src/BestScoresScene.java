@@ -1,11 +1,12 @@
 import java.awt.GridBagLayout;
 import javax.swing.*;
 
+/*! Scene for tables with players scores. */
 public class BestScoresScene extends MyScene{
-    private ScoreManager scoreManager = ScoreManager.getInstance();
+    private final ScoreManager scoreManager = ScoreManager.getInstance();
 
-    public BestScoresScene(SceneManager SM){
-        super(SceneManager.SCORES_SCENE_NAME, SM);
+    public BestScoresScene(){
+        super(SceneManager.SCORES_SCENE_NAME);
         super.setLayout(new GridBagLayout());
         Box box = Box.createVerticalBox();
 

@@ -1,15 +1,13 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
 
+/*! Template scene class. */
 public class MyScene extends JPanel{
-    private String name;
+    private final String name;
     protected SceneManager SM;
 
-    public MyScene(String name, SceneManager SM_)
+    public MyScene(String name)
     {
-        this.SM = SM_;
+        this.SM = SceneManager.getInstance();
         this.name = name;
         this.setBackground(SceneManager.DEFAULT_SCENE_BACKGROUND_COLOR);    
     }

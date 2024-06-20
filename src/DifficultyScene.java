@@ -1,21 +1,20 @@
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
-
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/*! Scene with short intro and difficulty choice. */
 public class DifficultyScene extends MyScene {
-    public DifficultyScene(SceneManager SM_){
-        super(SceneManager.DIFFICULTY_SCENE_NAME, SM_);
+    public DifficultyScene(){
+        super(SceneManager.DIFFICULTY_SCENE_NAME);
         this.setLayout(new GridBagLayout());
         JPanel textPanel = new JPanel();
         Box box = Box.createVerticalBox();
 
-        /* Tutorial text. */
+        /*! Tutorial text. */
         JLabel lab1 = new JLabel("To win the game all non-mine cells must be opened without opening a mine.");
         lab1.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         box.add(lab1);
@@ -43,13 +42,11 @@ public class DifficultyScene extends MyScene {
             final int k = i;
             final int[] gameSettings = Arrays.copyOf(SceneManager.DIFFICULTIES[i], 3);
 
-            diffButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    SM.startGame(gameSettings[0], 
-                                gameSettings[1], 
-                                gameSettings[2], 
-                                k);
-                }
+            diffButton.addActionListener((ActionEvent e) -> {
+                SM.startGame(gameSettings[0],
+                        gameSettings[1],
+                        gameSettings[2],
+                        k);
             });
             settingsPanel.add(diffButton);
         }

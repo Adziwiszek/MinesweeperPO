@@ -1,4 +1,4 @@
-/* Added to be used instead of Pair */
+/*! Position class. Added to be used instead of Pair. */
 public class Position {
     public int x;
     public int y;

@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+/*! Class that handles the whole game logic. */
 public class GameLogic {
     private Block[][] mineField;
     private JPanel panel;
@@ -17,10 +17,10 @@ public class GameLogic {
     private int bombs;
     private int coveredFields;
     private ArrayList<Position> mapPositions;
-    private SceneManager SM;
+    private final SceneManager SM;
 
-    public GameLogic(SceneManager SM_){
-        this.SM = SM_;
+    public GameLogic(){
+        this.SM = SceneManager.getInstance();
     }
 
     public void initGame(int sizeX_, int sizeY_, int bombs_, int diff){
@@ -135,7 +135,7 @@ public class GameLogic {
         }
     } 
 
-    /* Takes as an input list of available positions and starting position and
+    /*! Takes as an input list of available positions and starting position and
      * returns list of all positions that are viable for having a bomb.
      */
     private ArrayList<Position> secureStartingPos(ArrayList<Position> arr,
@@ -190,11 +190,8 @@ public class GameLogic {
     private boolean checkIfValidPosition(Position pos, int offX, int offY){
         int newY = pos.y + offY;
         int newX = pos.x + offX;
-        if(newX < 0 || newX >= this.sizeX ||
-           newY < 0 || newY >= this.sizeY){
-            return false;
-        }
-        return true;
+        return !(newX < 0 || newX >= this.sizeX ||
+                newY < 0 || newY >= this.sizeY);
     }
 
     public JPanel getPanel(){

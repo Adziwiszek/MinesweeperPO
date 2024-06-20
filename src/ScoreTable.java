@@ -1,20 +1,27 @@
 import java.awt.BorderLayout;
-import java.util.*;
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
+/*! Java swing table for showing players scores. */
 public class ScoreTable extends JPanel{
-    private ScoreManager scoreManager;
+    private final ScoreManager scoreManager;
     private ArrayList<Score> scores;
-    private DefaultTableModel tabModel;
-    private JScrollPane scrollPane;
-    private JTable table;
+    private final DefaultTableModel tabModel;
+    private final JScrollPane scrollPane;
+    private final JTable table;
     TableRowSorter<TableModel> sorter;
-    private String difficulty;
+    private final String difficulty;
 
     public ScoreTable(String difficulty){
         this.setLayout(new BorderLayout());
@@ -32,7 +39,7 @@ public class ScoreTable extends JPanel{
         
         tabModel = new DefaultTableModel(data, columnNames);
         table = new JTable(tabModel);
-        sorter = new TableRowSorter<TableModel>(table.getModel());
+        sorter = new TableRowSorter<>(table.getModel());
         List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
         sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
         sorter.setSortKeys(sortKeys);
@@ -57,6 +64,4 @@ public class ScoreTable extends JPanel{
         }
         sorter.sort();
     }
-    
-    
 }

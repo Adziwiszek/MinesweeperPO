@@ -1,9 +1,9 @@
-import java.awt.Color;
 import java.awt.GridBagLayout;
 
+/*! Scene for main menu. */
 public class MainMenuScene extends MyScene {
-    public MainMenuScene(SceneManager SM){
-        super(SceneManager.MENU_SCENE_NAME, SM);
+    public MainMenuScene(){
+        super(SceneManager.MENU_SCENE_NAME);
         super.setLayout(new GridBagLayout());
 
         super.add(new ChangeSceneButton(

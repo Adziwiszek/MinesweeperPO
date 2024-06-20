@@ -1,30 +1,28 @@
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
+/*! Class that represents single tile on the game board. */
 public class Block extends JButton {
-    /* state >= 0 - number of bombs around  
+    /*! state >= 0 - number of bombs around  
      * state < 0 - this is a bomb
      */
     private int state = 0;
     private boolean uncovered = false; 
     private boolean flagged = false;
-    // Position on map
-    private Position position;
-    // 
+    private Position position; /// Position on map
     private final int fontSize;
-    // Instance of parent class, that handles game logic
-    private GameLogic parent;    
+    private GameLogic parent; /// Instance of parent class, that handles game logic
 
+/*!
+    parent_ - instance of parent class, that handles game logic
+    pos_ - position of this block on the board
+    fontSize - selects font size for specific difficulty 
+*/
     public Block(GameLogic parent_, Position pos_, int fontSize){
-        /* parent_ - instance of parent class, that handles game logic
-         * pos_ - position of this block on the board
-         * fontSize - selects font size for specific difficulty 
-         */
         super();
         this.fontSize = fontSize;
         this.parent = parent_;

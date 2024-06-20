@@ -1,11 +1,10 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
-/* Class that is responsible for timing and displaying users time in game. */
+/*! Class that is responsible for timing and displaying users time in game. */
 public class SolveTimer implements ActionListener {
     private final Timer timer;
     private final JLabel timerLabel;
