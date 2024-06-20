@@ -15,11 +15,13 @@ public class BestScoresScene extends MyScene{
         scorePanel.add(scoreManager.getScoresTable(SceneManager.DIFFICULTY_NAMES[2]));
         box.add(scorePanel);
 
-        box.add(new ChangeSceneButton(
+        JPanel butPanel = new JPanel();
+        butPanel.add(new ChangeSceneButton(
             "Back to menu",
             SceneManager.MENU_SCENE_NAME,
             SM
         ));
+        box.add(butPanel);
         this.add(box);
     }
 }
